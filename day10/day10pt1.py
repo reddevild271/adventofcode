@@ -20,7 +20,6 @@ maxLoc = (0,0)
 for a in asteroids:
   xPositive = set()
   xNegative = set()
-  count = 0
   zeroYposFound = False
   zeroYnegFound = False
   for a2 in asteroids:
@@ -28,28 +27,22 @@ for a in asteroids:
       continue
     xDif = a2[0]-a[0]
     yDif = a2[1]-a[1]
-    if xDif > 0 or xDif == 0 and yDif >= 0:
+    if xDif > 0 or xDif == 0 and yDif < 0:
       try:
         f = Fraction(xDif,yDif)
-        if f not in xPositive:
-          xPositive.add(f)
-          count += 1
+        xPositive.add(f)
       except:
-        if not zeroYposFound:
-          count += 1
-          zeroYposFound = True
+        zeroYposFound = True
     else:
       try:
         f = Fraction(xDif,yDif)
-        if f not in xNegative:
-          xNegative.add(f)
-          count += 1
+        xNegative.add(f)
       except:
-        if not zeroYnegFound:
-          count += 1
-          zeroYnegFound = True
+        zeroYnegFound = True
+  count = len(xPositive)+len(xNegative)+int(zeroYposFound)+int(zeroYnegFound)
   if count > maxCount:
     maxCount = count
     maxLoc = a
 
 print(maxCount)
+print(maxLoc)
