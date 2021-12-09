@@ -9,7 +9,7 @@ def basin_size(row,col,system,checked):
   return 1 + basin_size(row-1,col,system,checked) \
            + basin_size(row,col-1,system,checked) \
            + basin_size(row+1,col,system,checked) \
-           + basin_size(row,col+1,system,checked) \
+           + basin_size(row,col+1,system,checked)
 
 system = [[9]+[int(c) for c in line[:-1]]+[9] for line in stdin]
 system = [[9]*(len(system[0]))] + system + [[9]*(len(system[0]))]
