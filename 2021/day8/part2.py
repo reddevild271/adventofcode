@@ -1,5 +1,4 @@
 from sys import stdin
-from time import sleep
 
 segments = {0:set([0,1,2,4,5,6]),
             1:set([2,5]),
