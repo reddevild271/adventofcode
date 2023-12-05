@@ -67,7 +67,6 @@ while True:
     break
   location += minimum_range
 
-found = False
 for i in range(location - minimum_range + 1, location):
   seed = loc_to_seed(i, maps, seeds)
   if seed is not None:
