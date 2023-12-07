@@ -49,7 +49,7 @@ class Hand:
     return len(self.counts) == 5
 
   def calc_score(self):
-    if self.score:
+    if self.score is not None:
       return self.score
     if self.five():
       self.score = 6

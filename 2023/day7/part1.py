@@ -31,7 +31,7 @@ class Hand:
     return len(self.set_cards) == 4
 
   def calc_score(self):
-    if self.score:
+    if self.score is not None:
       return self.score
     if self.five():
       self.score = 6
