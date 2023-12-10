@@ -17,6 +17,7 @@ class Pipe:
   def __repr__(self):
     return self.c
 
+# parse input
 pipe_grid = []
 start_pipe = None
 
@@ -36,9 +37,12 @@ for line in stdin:
     row.append(pipe)
   pipe_grid.append([None] + row + [None])
   y += 1
+
+# create border around input
 filler = [None]*len(pipe_grid[0])
 pipe_grid = [filler] + pipe_grid + [filler]
 
+# attach pipes to each other
 for row in pipe_grid:
   for pipe in row:
     if pipe is None:
@@ -61,6 +65,7 @@ for row in pipe_grid:
       pipe.E = pipe_E
       pipe_E.W = pipe
 
+# generate the main pipe loop and determine whether it turns right or left
 last_pipe = None
 path_pipe = start_pipe
 path_loop = []
@@ -97,6 +102,7 @@ while last_pipe is None or path_pipe != start_pipe:
     elif path_pipe.S:
       turns += 1
 
+# remove pipes out of the main loop
 for y in range(len(pipe_grid)):
   for x in range(len(pipe_grid[y])):
     if pipe_grid[y][x] not in path_loop:
@@ -104,6 +110,9 @@ for y in range(len(pipe_grid)):
 
 area_count = 0
 
+# traverse the x or y direction until a pipe is hit
+# modifies grid in place to keep track of newfound spaces
+# returns count of newfound spaces hit
 def find_space(grid, y, y_inc, x, x_inc):
   count = 0
   y += y_inc
@@ -116,15 +125,25 @@ def find_space(grid, y, y_inc, x, x_inc):
     y += y_inc
   return count
 
+# search the right or left side of each pipe in the main loop for empty space
 for pipe1, pipe2 in zip(path_loop[:-1], path_loop[1:]):
+  # if pipe 1 goes North into pipe 2
   if pipe2 is pipe1.N:
+    # if main loop turns right
     if turns > 0:
+      # find new spaces from pipe 1 to the right ( pipe is going North, so East )
       area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, 1)
+      # if pipe 1 is a left hand turn ( came from West, goes to North )
       if pipe1.W:
+        # find new spaces in the oppposite direction of the turn ( South )
         area_count += find_space(pipe_grid, pipe1.y, 1, pipe1.x, 0)
+    # if main loop turns left
     else:
+      # find new spaces from pipe 1 to the left ( pipe is going North, so West )
       area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, -1)
+      # if pipe 1 is a right hand turn ( came from East, goes to North )
       if pipe1.E:
+        # find new spaces in the oppposite direction of the turn ( South )
         area_count += find_space(pipe_grid, pipe1.y, 1, pipe1.x, 0)
   if pipe2 is pipe1.S:
     if turns > 0:
