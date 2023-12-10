@@ -104,123 +104,55 @@ for y in range(len(pipe_grid)):
 
 area_count = 0
 
+def find_space(grid, y, y_inc, x, x_inc):
+  count = 0
+  y += y_inc
+  x += x_inc
+  while grid[y][x] is True or grid[y][x] is None:
+    if grid[y][x] is None:
+      count += 1
+    grid[y][x] = True
+    x += x_inc
+    y += y_inc
+  return count
+
 for pipe1, pipe2 in zip(path_loop[:-1], path_loop[1:]):
   if pipe2 is pipe1.N:
     if turns > 0:
-      x = pipe1.x + 1
-      while pipe_grid[pipe1.y][x] is True or pipe_grid[pipe1.y][x] is None:
-        if pipe_grid[pipe1.y][x] is None:
-          area_count += 1
-        pipe_grid[pipe1.y][x] = True
-        x += 1
+      area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, 1)
       if pipe1.W:
-        y = pipe1.y + 1
-        while pipe_grid[y][pipe1.x] is True or pipe_grid[y][pipe1.x] is None:
-          if pipe_grid[y][pipe1.x] is None:
-            area_count += 1
-          pipe_grid[y][pipe1.x] = True
-          y += 1
-    if turns < 0:
-      x = pipe1.x - 1
-      while pipe_grid[pipe1.y][x] is True or pipe_grid[pipe1.y][x] is None:
-        if pipe_grid[pipe1.y][x] is None:
-          area_count += 1
-        pipe_grid[pipe1.y][x] = True
-        x -= 1
+        area_count += find_space(pipe_grid, pipe1.y, 1, pipe1.x, 0)
+    else:
+      area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, -1)
       if pipe1.E:
-        y = pipe1.y + 1
-        while pipe_grid[y][pipe1.x] is True or pipe_grid[y][pipe1.x] is None:
-          if pipe_grid[y][pipe1.x]is None:
-            area_count += 1
-          pipe_grid[y][pipe1.x] = True
-          y += 1
+        area_count += find_space(pipe_grid, pipe1.y, 1, pipe1.x, 0)
   if pipe2 is pipe1.S:
     if turns > 0:
-      x = pipe1.x - 1
-      while pipe_grid[pipe1.y][x] is True or pipe_grid[pipe1.y][x] is None:
-        if pipe_grid[pipe1.y][x] is None:
-          area_count += 1
-        pipe_grid[pipe1.y][x] = True
-        x -= 1
+      area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, -1)
       if pipe1.E:
-        y = pipe1.y - 1
-        while pipe_grid[y][pipe1.x] is True or pipe_grid[y][pipe1.x] is None:
-          if pipe_grid[y][pipe1.x] is None:
-            area_count += 1
-          pipe_grid[y][pipe1.x] = True
-          y -= 1
-    if turns < 0:
-      x = pipe1.x + 1
-      while pipe_grid[pipe1.y][x] is True or pipe_grid[pipe1.y][x] is None:
-        if pipe_grid[pipe1.y][x] is None:
-          area_count += 1
-        pipe_grid[pipe1.y][x] = True
-        x += 1
+        area_count += find_space(pipe_grid, pipe1.y, -1, pipe1.x, 0)
+    else:
+      area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, 1)
       if pipe1.W:
-        y = pipe1.y - 1
-        while pipe_grid[y][pipe1.x] is True or pipe_grid[y][pipe1.x] is None:
-          if pipe_grid[y][pipe1.x] is None:
-            area_count += 1
-          pipe_grid[y][pipe1.x] = True
-          y -= 1
+        area_count += find_space(pipe_grid, pipe1.y, -1, pipe1.x, 0)
   if pipe2 is pipe1.W:
     if turns > 0:
-      y = pipe1.y - 1
-      while pipe_grid[y][pipe1.x] is True or pipe_grid[y][pipe1.x] is None:
-        if pipe_grid[y][pipe1.x] is None:
-          area_count += 1
-        pipe_grid[y][pipe1.x] = True
-        y -= 1
+      area_count += find_space(pipe_grid, pipe1.y, -1, pipe1.x, 0)
       if pipe1.S:
-        x = pipe1.x + 1
-        while pipe_grid[pipe1.y][x] is True or pipe_grid[pipe1.y][x] is None:
-          if pipe_grid[pipe1.y][x] is None:
-            area_count += 1
-          pipe_grid[pipe1.y][x] = True
-          x += 1
-    if turns < 0:
-      y = pipe1.y + 1
-      while pipe_grid[y][pipe1.x] is True or pipe_grid[y][pipe1.x] is None:
-        if pipe_grid[y][pipe1.x] is None:
-          area_count += 1
-        pipe_grid[y][pipe1.x] = True
-        y += 1
+        area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, 1)
+    else:
+      area_count += find_space(pipe_grid, pipe1.y, 1, pipe1.x, 0)
       if pipe1.N:
-        x = pipe1.x + 1
-        while pipe_grid[pipe1.y][x] is True or pipe_grid[pipe1.y][x] is None:
-          if pipe_grid[pipe1.y][x] is None:
-            area_count += 1
-          pipe_grid[pipe1.y][x] = True
-          x += 1
+        area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, 1)
   if pipe2 is pipe1.E:
     if turns > 0:
-      y = pipe1.y + 1
-      while pipe_grid[y][pipe1.x] is True or pipe_grid[y][pipe1.x] is None:
-        if pipe_grid[y][pipe1.x] is None:
-          area_count += 1
-        pipe_grid[y][pipe1.x] = True
-        y += 1
+      area_count += find_space(pipe_grid, pipe1.y, 1, pipe1.x, 0)
       if pipe1.N:
-        x = pipe1.x - 1
-        while pipe_grid[pipe1.y][x] is True or pipe_grid[pipe1.y][x] is None:
-          if pipe_grid[pipe1.y][x] is None:
-            area_count += 1
-          pipe_grid[pipe1.y][x] = True
-          x -= 1
-    if turns < 0:
-      y = pipe1.y - 1
-      while pipe_grid[y][pipe1.x] is True or pipe_grid[y][pipe1.x] is None:
-        if pipe_grid[y][pipe1.x] is None:
-          area_count += 1
-        pipe_grid[y][pipe1.x] = True
-        y -= 1
+        area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, -1)
+    else:
+      area_count += find_space(pipe_grid, pipe1.y, -1, pipe1.x, 0)
       if pipe1.S:
-        x = pipe1.x - 1
-        while pipe_grid[pipe1.y][x] is True or pipe_grid[pipe1.y][x] is None:
-          if pipe_grid[pipe1.y][x] is None:
-            area_count += 1
-          pipe_grid[pipe1.y][x] = True
-          x -= 1
+        area_count += find_space(pipe_grid, pipe1.y, 0, pipe1.x, -1)
           
 #### print grid
 ##for row in pipe_grid:
