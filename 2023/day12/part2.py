@@ -15,15 +15,21 @@ def arrange(s, g):
   return total
 
 total = 0
-check = 1
-mult = 2
-i = 0
 for line in stdin:
   springs, groups = line.split()
   groups = [int(x) for x in groups.split(',')]
-  ret = arrange(((springs+'?')*mult)[:-1], groups*mult)
-  if i == check:
-    print(ret)
-  total += ret
-  i += 1
+  a1 = arrange(springs, groups)
+  a2 = arrange(springs+'?'+springs, groups*2)
+  a3 = arrange(springs+'?'+springs+'?'+springs, groups*3)
+  if a3 // a2 != a2 // a1:
+    print(springs)
+    print(groups)
+    print(a1)
+    print(a2)
+    print(a3)
+    print(arrange(((springs+'?')*4)[:-1], groups*4))
+    print()
+    total += arrange(((springs+'?')*5)[:-1], groups*5)
+  else:
+    total += a1 * (a2 // a1) ** 4
 print(total)
